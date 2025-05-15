@@ -12,8 +12,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', async (req, res) => {
 // Obtenir l'IP du client
-const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-console.log(ip)
+let ip = req.ip;
+
+  // Nettoyer IPv6/IPv4 mix ::ffff:
+if (ip.startsWith('::ffff:')) {
+    ip = ip.replace('::ffff:', '');
+}
 try {
     // Requête vers l'API ipinfo
     const response = await axios.get(`http://ipinfo.io/${ip}/json?token=${ACCESS_TOKEN}`);
@@ -37,5 +41,5 @@ try {
 });
 
 app.listen(PORT, () => {
-    console.log(`Serveur démarré sur http://localhost:${PORT}`);
+    console.log(`Serveur démarré sur http://localhost:${PORT}`);    
 });
