@@ -9,6 +9,7 @@ const ACCESS_TOKEN = '1305a4e5d5eb40'; // Remplace par ton token ipinfo.io
 
 // Pour servir les fichiers statiques (comme les images)
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('trust proxy', true);
 
 app.get('/', async (req, res) => {
 // Obtenir l'IP du client
